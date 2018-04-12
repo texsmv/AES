@@ -14,5 +14,5 @@ class bloque:
 
 
 
-a = bloque("hola")
-a.imprimir_bloque(0)
+#a = bloque("hola")
+#a.imprimir_bloque(0)

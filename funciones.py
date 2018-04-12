@@ -4,7 +4,7 @@ import numpy as np
 def csv_mat(path):
 
     datos  = pd.read_csv(path, index_col=False, header=None, delimiter = ' ')
-    print(datos)
+    #print(datos)
     X = []
     for row in datos.iterrows():
         index, data = row
