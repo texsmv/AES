@@ -23,4 +23,5 @@ def completar(v):
 
 
 sbox = csv_mat("s-box.csv")
-print(a)
+etable = csv_mat("e-table.csv")
+ltable = csv_mat("e-table.csv")
