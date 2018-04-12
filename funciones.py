@@ -3,7 +3,8 @@ import numpy as np
 
 def csv_mat(path):
 
-    datos  = pd.read_csv(path, index_col=False, header=1, delimiter = ' ')
+    datos  = pd.read_csv(path, index_col=False, header=None, delimiter = ' ')
+    print(datos)
     X = []
     for row in datos.iterrows():
         index, data = row
@@ -24,4 +25,4 @@ def completar(v):
 
 sbox = csv_mat("s-box.csv")
 etable = csv_mat("e-table.csv")
-ltable = csv_mat("e-table.csv")
+ltable = csv_mat("l-table.csv")
