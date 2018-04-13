@@ -3,6 +3,7 @@ from AES import *
 class Encriptador:
     def __init__(self, key):
         self.encrypted_text = ''
+        self.decrypted_text = ''
         self.key = key
         key_expansion = AESKeyExpansion(key)
         key_expansion.RunGen()
@@ -13,13 +14,26 @@ class Encriptador:
     def SetEncryptedText(self, encrypted_text):
         self.encrypted_text = encrypted_text
 
-    def Run(self, text):
+    def SetDecryptedText(self, decrypted_text):
+        self.decrypted_text = decrypted_text
+
+    def Run(self, text, encryption_bool):
         block_list = Bloques(text)
-        for b in block_list.bloques:
-            self.AES_encrypter.RunRounds(b)
-        encrypted_text = block_list.get_text()
-        self.SetEncryptedText(encrypted_text)
-        return encrypted_text
+        output_text = ''
+        if encryption_bool:
+	        for b in block_list.bloques:
+	            self.AES_encrypter.RunRounds(b, 1)
+	        output_text = block_list.get_text()
+	        self.SetEncryptedText(output_text)
+        else:
+        	for b in block_list.bloques:
+	            self.AES_encrypter.RunRounds(b, 0)
+	        output_text = block_list.get_text()
+	        self.SetDecryptedText(output_text)
+        return output_text
 
     def GetEncryptedText(self):
         return self.encrypted_text
+
+	def GetEncryptedText(self):
+        return self.decrypted_text
