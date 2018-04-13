@@ -19,6 +19,8 @@ def text_to_int(text):
 
 
 def completar(v):
+    if len(v) % 16 == 0:
+        return v
     c = 16 - len(v) % 16
     return np.concatenate([v ,np.array([0] * c)])
 
@@ -26,3 +28,20 @@ def completar(v):
 sbox = csv_mat("s-box.csv")
 etable = csv_mat("e-table.csv")
 ltable = csv_mat("l-table.csv")
+
+def mult(v, j):
+    v1 , v2 = indices(v)
+    j1, j2 = indices(j)
+
+    v = ltable[v1][v2]
+    j = ltable[j1][j2]
+
+
+
+
+def indices(v):
+    v = hex(v)[2:]
+    if len(v) == 1:
+        return 0, int(v[0], 16)
+    else:
+        return  int(v[0], 16), int(v[1], 16)
