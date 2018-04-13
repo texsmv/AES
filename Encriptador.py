@@ -1,25 +1,25 @@
 from AES import *
 
 class Encriptador:
-	def __init__(self, text, key):
-		self.plain_text = text
-		self.block_list = Bloques(text)
-		self.encrypted_text = ''
+    def __init__(self, key):
+        self.encrypted_text = ''
+        self.key = key
+        key_expansion = AESKeyExpansion(key)
+        key_expansion.RunGen()
+        self.expanded_key = key_expansion.GetExpandedKey()
+        
+        self.AES_encrypter = AES(self.expanded_key)
 
-		self.key = key
-		key_expansion = AESKeyExpansion(key)
-		key_expansion.RunGen()
-		self.expanded_key = key_expansion.GetExpandedKey()
+    def SetEncryptedText(self, encrypted_text):
+        self.encrypted_text = encrypted_text
 
-		self.AES_encrypter = AES(self.expanded_key)
+    def Run(self, text):
+        block_list = Bloques(text)
+        for b in block_list.bloques:
+            self.AES_encrypter.RunRounds(b)
+        encrypted_text = block_list.get_text()
+        self.SetEncryptedText(encrypted_text)
+        return encrypted_text
 
-	def SetEncryptedText(self):
-		pass
-
-	def Run(self):
-		for b in self.block_list.bloques:
-			self.AES_encrypter.RunRounds(b)
-		self.SetEncryptedText()
-
-	def GetEncryptedText(self):
-		return self.encrypted_text
+    def GetEncryptedText(self):
+        return self.encrypted_text
