@@ -6,11 +6,11 @@ class AES:
 		self.expanded_key = expanded_key
 		self.bloque_dim = 4
 
-	def AddRoundKey(self, bloque, round):
+	def AddRoundKey(self, bloque, round_num):
 		key_byte_counter = 0
 		for j in range(self.bloque_dim):
 			for i in range(self.bloque_dim):
-				bloque.set_at(i, j, bloque.at(i,j) ^ self.expanded_key[16*round + key_byte_counter])
+				bloque.set_at(i, j, bloque.at(i,j) ^ self.expanded_key[16*round_num + key_byte_counter])
 				key_byte_counter += 1
 		return bloque
 
