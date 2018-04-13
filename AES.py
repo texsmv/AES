@@ -24,9 +24,15 @@ class AES:
     def ShiftRows(self, bloque):
     	for i in range(1, 4):
 			bloque.mat[i] = np.roll(bloque.mat[i], -i)
-
-    def MixColumns(self, bloque):
-    	pass
+		return bloque
+		
+    def MixColumns(self,  bloque):
+	    for i in range(0, 4):
+	        bloque.set_at(0, i, mult(bloque.at( 0, i), 2) ^ mult(bloque.at( 1, i), 3) ^ mult(bloque.at( 2, i), 1) ^ mult(bloque.at(3, i), 1))
+	        bloque.set_at(1, i, mult(bloque.at( 0, i), 1) ^ mult(bloque.at( 1, i), 2) ^ mult(bloque.at( 2, i), 3) ^ mult(bloque.at(3, i), 1))
+	        bloque.set_at(2, i, mult(bloque.at( 0, i), 1) ^ mult(bloque.at( 1, i), 1) ^ mult(bloque.at( 2, i), 2) ^ mult(bloque.at(3, i), 3))
+	        bloque.set_at(3, i, mult(bloque.at( 0, i), 3) ^ mult(bloque.at( 1, i), 1) ^ mult(bloque.at( 2, i), 1) ^ mult(bloque.at(3, i), 2))
+	    return bloque
 
     def RunRounds(self, bloque):
     	Rounds = 0

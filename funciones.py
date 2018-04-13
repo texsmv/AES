@@ -36,6 +36,11 @@ def mult(v, j):
     v = ltable[v1][v2]
     j = ltable[j1][j2]
 
+    val = (v + j) % 255
+
+
+    i1, i2 = indices(val)
+    return etable[i1][i2]
 
 
 
@@ -45,3 +50,11 @@ def indices(v):
         return 0, int(v[0], 16)
     else:
         return  int(v[0], 16), int(v[1], 16)
+
+
+
+
+
+
+
+print(hex(mult(175, 8)))
