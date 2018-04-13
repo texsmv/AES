@@ -62,3 +62,4 @@ combo["values"] = ["16 bits","24 bits","32 bits"]
 
 root.mainloop()
 
+
