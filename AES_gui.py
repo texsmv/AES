@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import *
 from tkinter import ttk
+from Encriptador import *
 
 root = tk.Tk()
 
@@ -17,12 +18,15 @@ root.geometry("%dx%d+%d+%d" % (width, height,x_offset,y_offset))
 
 def encrypt():
     inputValue = textBox1.get("1.0","end-1c")
-    textBox2.insert(END,inputValue+" Diego pdh")
-    textBox2.config(state=DISABLED)
+    key = textBox3.get("1.0","end-1c")
+    Encrypter = Encriptador(key)
+    text_encrypted = Encrypter.Run(inputValue)
+    print(text_encrypted)
+    textBox2.insert(END,text_encrypted)
+    textBox2.config(state=DISABLED) 
     file = open('encrypted_text.txt','w')
-    file.write(textBox2.get("1.0","end-1c"))
+    file.write(text_encrypted)
     file.close()
-    
 
 
 frame = tk.Frame(root)
