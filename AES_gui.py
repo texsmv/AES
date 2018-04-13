@@ -19,6 +19,10 @@ def encrypt():
     inputValue = textBox1.get("1.0","end-1c")
     textBox2.insert(END,inputValue+" Diego pdh")
     textBox2.config(state=DISABLED)
+    file = open('encrypted_text.txt','w')
+    file.write(textBox2.get("1.0","end-1c"))
+    file.close()
+    
 
 
 frame = tk.Frame(root)
