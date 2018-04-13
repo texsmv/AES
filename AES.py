@@ -14,11 +14,14 @@ class AES:
                 key_byte_counter += 1
         return bloque
 
-    def SubByte(self, bloque):
+    def SubByte(self, bloque, encryption_bool=1):
         for j in range(self.bloque_dim):
             for i in range(self.bloque_dim):
                 hex_word = f'{bloque.at(i,j):02x}'
-                bloque.set_at(i, j, (sbox[int(hex_word[0], 16)][int(hex_word[1], 16)]))
+                if encryption_bool:
+                    bloque.set_at(i, j, (sbox[int(hex_word[0], 16)][int(hex_word[1], 16)]))
+                else:
+                    bloque.set_at(i, j, (sbox_inverse[int(hex_word[0], 16)][int(hex_word[1], 16)]))
         return bloque
 
     def ShiftRows(self, bloque):
@@ -34,7 +37,7 @@ class AES:
             bloque.set_at(3, i, mult(bloque.at( 0, i), 3) ^ mult(bloque.at( 1, i), 1) ^ mult(bloque.at( 2, i), 1) ^ mult(bloque.at(3, i), 2))
         return bloque
 
-    def RunRounds(self, bloque):
+    def RunRounds(self, bloque, encryption_bool):
         Rounds = 0
         if len(self.expanded_key) == 176:
             Rounds = 10
@@ -44,7 +47,13 @@ class AES:
             Rounds = 14
         self.AddRoundKey(bloque, 0)
         for R in range(1, Rounds+1):
-            if R == Rounds:
-                self.AddRoundKey(self.ShiftRows(self.SubByte(bloque)), R)
+            if encryption_bool:
+                if R == Rounds:
+                    self.AddRoundKey(self.ShiftRows(self.SubByte(bloque, 1), 1), R)
+                else:
+                    self.AddRoundKey(self.MixColumns(self.ShiftRows(self.SubByte(bloque, 1), 1), 1), R)
             else:
-                self.AddRoundKey(self.MixColumns(self.ShiftRows(self.SubByte(bloque))), R)
+                if R == Rounds:
+                    self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), R)
+                else:
+                    self.MixColumns(self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), R), 0)
