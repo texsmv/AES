@@ -22,7 +22,8 @@ class AES:
         return bloque
 
     def ShiftRows(self, bloque):
-    	pass
+    	for i in range(1, 4):
+			bloque.mat[i] = np.roll(bloque.mat[i], -i)
 
     def MixColumns(self, bloque):
     	pass
