@@ -25,27 +25,30 @@ class AES:
         return bloque
 
     def ShiftRows(self, bloque, encrypt):
-		if encrypt == True:
-			enc = 1
-		else:
-			enc = -1
+        if encrypt:
+            enc = 1
+        else:
+            enc = -1
         for i in range(1, 4):
             bloque.mat[i] = np.roll(bloque.mat[i], -i * enc)
         return bloque
 
     def MixColumns(self,  bloque, encrypt):
-		m_enc = [[2,3,1,1],[1,2,3,1],[1,1,2,3],[3,1,1,2]]
-		m_des = [[14,11,13,9],[9,14,11,13],[13,9,14,11],[11,13,9,14]]
-
-		if encrypt == True:
-			m = m_enc
-		else:
-			m = m_des
+        m_enc = [[2,3,1,1],[1,2,3,1],[1,1,2,3],[3,1,1,2]]
+        m_des = [[14,11,13,9],[9,14,11,13],[13,9,14,11],[11,13,9,14]]
+        if encrypt:
+            m = m_enc
+        else:
+            m = m_des
         for i in range(0, 4):
-            bloque.set_at(0, i, mult(bloque.at( 0, i), m[0][0]) ^ mult(bloque.at( 1, i), m[0][1]) ^ mult(bloque.at( 2, i), m[0][2]) ^ mult(bloque.at(3, i), m[0][3]))
-            bloque.set_at(1, i, mult(bloque.at( 0, i), m[1][0]) ^ mult(bloque.at( 1, i), m[1][1]) ^ mult(bloque.at( 2, i), m[1][2]) ^ mult(bloque.at(3, i), m[1][3]))
-            bloque.set_at(2, i, mult(bloque.at( 0, i), m[2][0]) ^ mult(bloque.at( 1, i), m[2][1]) ^ mult(bloque.at( 2, i), m[2][2]) ^ mult(bloque.at(3, i), m[2][3]))
-            bloque.set_at(3, i, mult(bloque.at( 0, i), m[3][0]) ^ mult(bloque.at( 1, i), m[3][0]) ^ mult(bloque.at( 2, i), m[3][2]) ^ mult(bloque.at(3, i), m[3][3]))
+            b1 = bloque.at( 0, i)
+            b2 = bloque.at( 1, i)
+            b3 = bloque.at( 2, i)
+            b4 = bloque.at( 3, i)
+            bloque.set_at(0, i, mult(b1, m[0][0]) ^ mult(b2, m[0][1]) ^ mult(b3, m[0][2]) ^ mult(b4, m[0][3]))
+            bloque.set_at(2, i, mult(b1, m[2][0]) ^ mult(b2, m[2][1]) ^ mult(b3, m[2][2]) ^ mult(b4, m[2][3]))
+            bloque.set_at(3, i, mult(b1, m[3][0]) ^ mult(b2, m[3][1]) ^ mult(b3, m[3][2]) ^ mult(b4, m[3][3]))
+            bloque.set_at(1, i, mult(b1, m[1][0]) ^ mult(b2, m[1][1]) ^ mult(b3, m[1][2]) ^ mult(b4, m[1][3]))
         return bloque
 
     def RunRounds(self, bloque, encryption_bool):
@@ -56,7 +59,10 @@ class AES:
             Rounds = 12
         elif len(self.expanded_key) == 240:
             Rounds = 14
-        self.AddRoundKey(bloque, 0)
+        if encryption_bool:
+            self.AddRoundKey(bloque, 0)
+        else:
+            self.AddRoundKey(bloque, Rounds)
         for R in range(1, Rounds+1):
             if encryption_bool:
                 if R == Rounds:
@@ -65,6 +71,6 @@ class AES:
                     self.AddRoundKey(self.MixColumns(self.ShiftRows(self.SubByte(bloque, 1), 1), 1), R)
             else:
                 if R == Rounds:
-                    self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), R)
+                    self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), Rounds-R)
                 else:
-                    self.MixColumns(self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), R), 0)
+                    self.MixColumns(self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), Rounds-R), 0)

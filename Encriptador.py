@@ -21,19 +21,19 @@ class Encriptador:
         block_list = Bloques(text)
         output_text = ''
         if encryption_bool:
-	        for b in block_list.bloques:
-	            self.AES_encrypter.RunRounds(b, 1)
-	        output_text = block_list.get_text()
-	        self.SetEncryptedText(output_text)
+            for b in block_list.bloques:
+                self.AES_encrypter.RunRounds(b, 1)
+            output_text = block_list.get_text()
+            self.SetEncryptedText(output_text)
         else:
-        	for b in block_list.bloques:
-	            self.AES_encrypter.RunRounds(b, 0)
-	        output_text = block_list.get_text()
-	        self.SetDecryptedText(output_text)
+            for b in block_list.bloques:
+               self.AES_encrypter.RunRounds(b, 0)
+            output_text = block_list.get_text()
+            self.SetDecryptedText(output_text)
         return output_text
 
     def GetEncryptedText(self):
         return self.encrypted_text
 
-	def GetEncryptedText(self):
+    def GetDecryptedText(self):
         return self.decrypted_text

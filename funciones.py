@@ -22,7 +22,7 @@ def completar(v):
     if len(v) % 16 == 0:
         return v
     c = 16 - len(v) % 16
-    return np.concatenate([v ,np.array([0] * c)])
+    return np.concatenate([v ,np.array([1] * c)])
 
 
 sbox = csv_mat("s-box.csv")
