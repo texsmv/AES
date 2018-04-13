@@ -28,6 +28,7 @@ def completar(v):
 sbox = csv_mat("s-box.csv")
 etable = csv_mat("e-table.csv")
 ltable = csv_mat("l-table.csv")
+sbox_inverse = csv_mat("s-box_inverse.csv")
 
 def mult(v, j):
     v1 , v2 = indices(v)
