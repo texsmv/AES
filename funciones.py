@@ -50,11 +50,3 @@ def indices(v):
         return 0, int(v[0], 16)
     else:
         return  int(v[0], 16), int(v[1], 16)
-
-
-
-
-
-
-
-print(hex(mult(175, 8)))
