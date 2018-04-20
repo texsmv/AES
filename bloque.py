@@ -16,6 +16,9 @@ class Bloque:
     def get_text(self):
         return ''.join([ chr(e) for  e in self.mat.transpose().reshape(16,)])
 
+    def imprimir(self):
+        print(self.mat)
+
 class Bloques:
     def __init__(self, text):
         self.texto = completar(text_to_int(text))

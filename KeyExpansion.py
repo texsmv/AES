@@ -9,7 +9,7 @@ class AESKeyExpansion:
     def ConcatenateBytes(self, number_list):
         B = ''
         for i in number_list:
-            B += f'{i:08b}'
+            B += format(i,'08b')
         return int(B, 2)
 
     def SeparateBytes(self, bin_number):
@@ -35,7 +35,7 @@ class AESKeyExpansion:
     def SubWord(self, word):
         A = []
         for i in word:
-            hex_word = f'{i:02x}'
+            hex_word = format(i,'02x')
             A.append(sbox[int(hex_word[0], 16)][int(hex_word[1], 16)])
         return A
 

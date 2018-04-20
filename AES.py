@@ -17,7 +17,8 @@ class AES:
     def SubByte(self, bloque, encryption_bool=1):
         for j in range(self.bloque_dim):
             for i in range(self.bloque_dim):
-                hex_word = f'{bloque.at(i,j):02x}'
+                hex_word = format(bloque.at(i,j), '02x')
+
                 if encryption_bool:
                     bloque.set_at(i, j, (sbox[int(hex_word[0], 16)][int(hex_word[1], 16)]))
                 else:
@@ -45,11 +46,14 @@ class AES:
             b2 = bloque.at( 1, i)
             b3 = bloque.at( 2, i)
             b4 = bloque.at( 3, i)
+
+
             bloque.set_at(0, i, mult(b1, m[0][0]) ^ mult(b2, m[0][1]) ^ mult(b3, m[0][2]) ^ mult(b4, m[0][3]))
             bloque.set_at(2, i, mult(b1, m[2][0]) ^ mult(b2, m[2][1]) ^ mult(b3, m[2][2]) ^ mult(b4, m[2][3]))
             bloque.set_at(3, i, mult(b1, m[3][0]) ^ mult(b2, m[3][1]) ^ mult(b3, m[3][2]) ^ mult(b4, m[3][3]))
             bloque.set_at(1, i, mult(b1, m[1][0]) ^ mult(b2, m[1][1]) ^ mult(b3, m[1][2]) ^ mult(b4, m[1][3]))
-        return bloque
+
+
 
     def RunRounds(self, bloque, encryption_bool):
         Rounds = 0
@@ -64,13 +68,30 @@ class AES:
         else:
             self.AddRoundKey(bloque, Rounds)
         for R in range(1, Rounds+1):
+
+            print(bloque.mat)
             if encryption_bool:
                 if R == Rounds:
-                    self.AddRoundKey(self.ShiftRows(self.SubByte(bloque, 1), 1), R)
+                    self.SubByte(bloque, 1)
+                    self.ShiftRows(bloque, 1)
+
+                    self.AddRoundKey(bloque, R)
                 else:
-                    self.AddRoundKey(self.MixColumns(self.ShiftRows(self.SubByte(bloque, 1), 1), 1), R)
+
+                    self.SubByte(bloque, 1)
+                    self.ShiftRows(bloque, 1)
+                    self.MixColumns(bloque, 1)
+                    self.AddRoundKey(bloque, R)
+
             else:
                 if R == Rounds:
-                    self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), Rounds-R)
+                    self.ShiftRows(bloque, 0)
+                    self.SubByte(bloque, 0)
+                    self.AddRoundKey(bloque, Rounds - R)
+
+
                 else:
-                    self.MixColumns(self.AddRoundKey(self.SubByte(self.ShiftRows(bloque, 0), 0), Rounds-R), 0)
+                    self.ShiftRows(bloque, 0)
+                    self.SubByte(bloque, 0)
+                    self.AddRoundKey(bloque, Rounds - R)
+                    self.MixColumns(bloque, 0)

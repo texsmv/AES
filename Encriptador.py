@@ -8,7 +8,7 @@ class Encriptador:
         key_expansion = AESKeyExpansion(key)
         key_expansion.RunGen()
         self.expanded_key = key_expansion.GetExpandedKey()
-        
+
         self.AES_encrypter = AES(self.expanded_key)
 
     def SetEncryptedText(self, encrypted_text):
@@ -19,9 +19,11 @@ class Encriptador:
 
     def Run(self, text, encryption_bool):
         block_list = Bloques(text)
+
         output_text = ''
         if encryption_bool:
             for b in block_list.bloques:
+                print(b.mat)
                 self.AES_encrypter.RunRounds(b, 1)
             output_text = block_list.get_text()
             self.SetEncryptedText(output_text)
