@@ -60,7 +60,7 @@ def completar(v):
     if len(v) % 16 == 0:
         return v
     c = 16 - len(v) % 16
-    return np.concatenate([v ,np.array([1] * c)])
+    return np.concatenate([v ,np.array([ord(' ')] * c)])
 
 sbox = np.array(sbox2).reshape(16, 16)
 
